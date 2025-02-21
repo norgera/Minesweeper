@@ -41,15 +41,9 @@ Cell::Cell(QWidget *parent)
 //Loads icons
 void Cell::loadIcons()
 {
-    auto loadIcon = [](const QString &fileName) -> QIcon {
-        if (QFile::exists(fileName)) {
-            return QIcon(fileName);
-        }
-    };
-    m_mineIcon = loadIcon("icons/mine.png");
-    m_flagIcon = loadIcon("icons/flag.png");
-    m_defaultIcon = loadIcon("icons/default.png");
-
+    m_mineIcon = QIcon(":/icons/mine.png");
+    m_flagIcon = QIcon(":/icons/flag.png");
+    m_defaultIcon = QIcon(":/icons/default.png");
     m_iconsLoaded = true;
 }
 
