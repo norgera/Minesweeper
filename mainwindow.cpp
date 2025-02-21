@@ -48,11 +48,16 @@ MainWindow::MainWindow(QWidget *parent)
 // Destructor for main window, cleans up cells
 MainWindow::~MainWindow()
 {
-    for (int r = 0; r < m_rows; ++r) {
-        for (int c = 0; c < m_cols; ++c) {
-            delete m_cells[r][c];
+    // Clear the grid layout first
+    while (QLayoutItem* item = m_gridLayout->takeAt(0)) {
+        if (QWidget* widget = item->widget()) {
+            widget->deleteLater();
         }
+        delete item;
     }
+    
+    // Clear the cells vector
+    m_cells.clear();
 }
 
 // Helper to fully reset the board
@@ -229,12 +234,12 @@ void MainWindow::gameOver(bool won)
     if (msgBox.clickedButton() == againBtn) {
         resetGame();
     } else if (msgBox.clickedButton() == menuBtn) {
-        int currentMines = m_totalMines;
-        close();
         MainWindow *newWindow = new MainWindow();
         newWindow->show();
+        this->setAttribute(Qt::WA_DeleteOnClose);
+        this->close();
     } else if (msgBox.clickedButton() == exitBtn) {
-        QApplication::quit();
+        QApplication::closeAllWindows();
     }
 }
 
